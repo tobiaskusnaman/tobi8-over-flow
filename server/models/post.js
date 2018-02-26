@@ -11,7 +11,8 @@ var PostSchema  = new Schema({
     type: Schema.Types.ObjectId, ref: 'User'
   }],
   vote: [{
-    type: Schema.Types.ObjectId, ref: 'User'
+    type: Schema.Types.ObjectId, ref: 'User',
+    point: Number
   }],
   comment: [{
     type: Schema.Types.ObjectId, ref: 'Comment'

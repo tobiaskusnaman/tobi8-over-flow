@@ -6,9 +6,9 @@ mongoose.connect('mongodb://localhost/overflow');
 
 var CommentSchema  = new Schema({
   comment: String,
-  userId: [{
+  userId: {
     type: Schema.Types.ObjectId, ref: 'User'
-  }]
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Comment', CommentSchema)
