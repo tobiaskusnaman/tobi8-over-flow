@@ -17,7 +17,7 @@ export default new Router({
       component: CreateQuestion
     },
     {
-      path: '/post/:id',
+      path: '/post/:postId',
       component: DetailQuestion
     },
     {
@@ -33,11 +33,22 @@ export default new Router({
           component: ListPost,
           props: true
         }
-      ]
+      ],
+      beforeEnter: (to, from, next) => {
+        if (localStorage.getItem('token')) {
+          next()
+        } else {
+          next('/')
+        }
+      }
     },
     {
       path: '/',
       name: 'Hello',
+      component: HomePage
+    },
+    {
+      path: '*',
       component: HomePage
     }
   ]

@@ -62,12 +62,13 @@ export default {
   methods: {
     getPostById () {
       let self = this
-      this.$http.get(`/posts/${this.$route.params.id}`, {
+      this.$http.get(`/posts/${this.$route.params.postId}`, {
         headers: {
           token: localStorage.getItem('token')
         }
       })
         .then(post => {
+          console.log('KE SINI', post)
           self.post = post.data.data
         })
         .catch(err => {
@@ -97,7 +98,7 @@ export default {
           }
         })
           .then(user => {
-            this.$http.post(`/posts/${this.$route.params.id}/comment`, {
+            this.$http.post(`/posts/${this.$route.params.postId}/comment`, {
               comment: self.answer,
               username: user.data.data.username
             }, {
@@ -135,8 +136,6 @@ export default {
       this.$http.post(`posts/${this.user._id}/comment/${answerId}/vote`)
         .then(answerVote => {
           self.getPostById()
-          console.log('HASILNYA', answerVote.data.data)
-          // self.$store.commit('voteAnswer', answerVote.data.data)
         })
         .catch(err => {
           console.log(err)
@@ -145,6 +144,7 @@ export default {
   },
   created: function () {
     this.getPostById()
+    this.getInfo()
   },
   watch: {
     '$store.state.questions': function () {

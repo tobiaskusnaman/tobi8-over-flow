@@ -14,7 +14,7 @@
     <!-- <router-link v-for="(post, i) in posts" :key='post._id' class="list-group-item list-group-item-action" :to="{ path: `${post._id}/edit`, params: {postId: post._id} }"> -->
     <a v-for="(post, i) in posts" :key='post._id' class="list-group-item list-group-item-action">
       <span style="float:left">
-        <router-link :to="{ name: '', params: {} }" style="color:black">{{post.question}}</router-link>
+        <router-link :to="{ path: `/post/${post._id}`, params: {postId: post._id} }" style="color:black">{{post.question}}</router-link>
       </span>
       <span class="pull-right" style="float:right">
         <button v-if="modify" type="button" class="btn btn-outline-primary" @click="editPost(post._id)">Edit</button>
@@ -78,7 +78,7 @@ export default {
                 console.log(err)
               })
           } else {
-            this.$swal('Your imaginary file is safe!')
+            this.$swal('Your post is safe!')
           }
         })
     }
