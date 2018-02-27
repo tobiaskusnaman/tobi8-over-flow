@@ -76,7 +76,16 @@ class CommentController {
             }
           })
             .then(data => {
-              res.send(data)
+              CommentModel.findById(req.params.commentId)
+                .then(editedComment => {
+                  res.send({
+                    msg: 'input vote to comment',
+                    data: editedComment
+                  })
+                })
+                .catch(err => {
+                  res.send(err)
+                })
             })
             .catch(err => {
               res.send(err)
@@ -91,7 +100,16 @@ class CommentController {
               }
           })
             .then(data => {
-              res.send(data)
+              CommentModel.findById(req.params.commentId)
+                .then(editedComment => {
+                  res.send({
+                    msg: 'input vote to comment',
+                    data: editedComment
+                  })
+                })
+                .catch(err => {
+                  res.send(err)
+                })
             })
             .catch(err => {
               res.send(err)

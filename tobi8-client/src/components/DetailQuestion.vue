@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="content">
-    <div class="jumbotron">
+    <div class="jumbotron" style="text-align:left">
       <h2 >{{post.question}}</h2>
       <hr class="my-4">
       <p>{{post.description}}</p>
@@ -10,12 +10,19 @@
         <button type="button" data-target="#answerModal" data-toggle="modal" class="btn btn-primary">Answer</button>
       </div>
     </p>
-    <div class="list-group"  v-for='answer in post.comment'>
-      <div class="row">
-        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-          <p class="mb-1">{{answer.comment}}</p>
-          <small class="text-muted">by: {{answer.username}} </small>
-        </a>
+    <div class="list-group"  v-for='answer in post.comment' style="margin:10px">
+      <div class="row" style="text-align:left">
+        <div class="col-sm-1">
+          <strong> {{answer.votes.length}} </strong>
+          <button type="button" class="btn btn-primary" @click="voting(answer._id)">VOTE</button>
+        </div>
+        <div class="col-sm-11">
+          <a class="list-group-item list-group-item-action flex-column align-items-start">
+            <p class="mb-1">{{answer.comment}}</p>
+            <small class="text-muted">by: {{answer.username}} </small>
+          </a>
+        </div>
+
       </div>
     </div>
     <div class="modal" id='answerModal'>
@@ -48,7 +55,8 @@ export default {
   data: function () {
     return {
       post: null,
-      answer: null
+      answer: null,
+      user: null
     }
   },
   methods: {
@@ -61,6 +69,20 @@ export default {
       })
         .then(post => {
           self.post = post.data.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    getInfo () {
+      let self = this
+      this.$http.get('/getInfo', {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(user => {
+          self.user = user.data.data
         })
         .catch(err => {
           console.log(err)
@@ -107,6 +129,18 @@ export default {
           button: 'Okay!'
         })
       }
+    },
+    voting (answerId) {
+      let self = this
+      this.$http.post(`posts/${this.user._id}/comment/${answerId}/vote`)
+        .then(answerVote => {
+          self.getPostById()
+          console.log('HASILNYA', answerVote.data.data)
+          // self.$store.commit('voteAnswer', answerVote.data.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
   created: function () {
@@ -114,7 +148,8 @@ export default {
   },
   watch: {
     '$store.state.questions': function () {
-      this.getPostById()
+      this.getInfo()
+      // this.getPostById.post(`posts/`)
     }
   }
 }
