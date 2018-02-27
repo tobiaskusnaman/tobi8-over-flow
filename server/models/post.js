@@ -7,9 +7,9 @@ mongoose.connect('mongodb://localhost/overflow');
 var PostSchema  = new Schema({
   question: String,
   description: String,
-  userId: [{
+  userId: {
     type: Schema.Types.ObjectId, ref: 'User'
-  }],
+  },
   votes: [{
     type: Schema.Types.ObjectId, ref: 'User',
     point: {

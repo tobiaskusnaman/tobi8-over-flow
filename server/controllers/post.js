@@ -28,6 +28,7 @@ class PostController {
 
   static findAll (req, res) {
     Post.find()
+      .populate('userId')
       .then(posts => {
         res.status(200).send({
           msg: 'posts are found',

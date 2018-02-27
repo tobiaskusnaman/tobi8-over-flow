@@ -1,28 +1,71 @@
 <template>
   <div id="app">
-    <NavBar/>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="#">tobi8-overflow</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-target="#openModalSignUp" data-toggle="modal">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a v-if="!isLogin" class="nav-link" data-target="#openModal" data-toggle="modal">Login</a>
+            <a v-else="!isLogin" class="nav-link" @click='logout'>LogOut</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
     <main>
       <div class="container">
         <router-view></router-view>
       </div>
     </main>
+    <Login/>
+    <SignUp/>
   </div>
 </template>
 
 
 <script>
 import store from '@/store/index.js'
-import NavBar from '@/components/NavBar'
+import Login from '@/components/Login'
+import SignUp from '@/components/SignUp'
 export default {
   name: 'app',
   store,
   components: {
-    NavBar
+    Login,
+    SignUp
+  },
+  data: function () {
+    return {
+      isLogin: false
+    }
   },
   methods: {
+    logout () {
+      this.isLogin = false
+      localStorage.clear()
+      this.$store.commit('setLogin', null)
+    }
   },
   created: function () {
+    if (localStorage.getItem('token')) {
+      this.isLogin = true
+    }
     this.$store.dispatch('getAllQuestions')
+  },
+  watch: {
+    '$store.state.user': function (val) {
+      if (val) {
+        this.isLogin = true
+      }
+    }
   }
 }
 </script>

@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import Vuex from 'vuex'
 import axios from 'axios'
+import swal from 'sweetalert'
 
 Vue.config.productionTip = false
 Vue.use(Vuex)
@@ -13,7 +14,7 @@ Vue.use(axios)
 Vue.prototype.$http = axios.create({
   baseURL: 'http://localhost:3000/'
 })
-
+Vue.prototype.$swal = swal
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
