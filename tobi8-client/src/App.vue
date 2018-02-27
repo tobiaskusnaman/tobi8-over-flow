@@ -1,18 +1,29 @@
 <template>
   <div id="app">
-    <header>
-      <span>Vue.js PWA</span>
-    </header>
+    <NavBar/>
     <main>
-      <img src="./assets/logo.png" alt="Vue.js PWA">
-      <router-view></router-view>
+      <div class="container">
+        <router-view></router-view>
+      </div>
     </main>
   </div>
 </template>
 
+
 <script>
+import store from '@/store/index.js'
+import NavBar from '@/components/NavBar'
 export default {
-  name: 'app'
+  name: 'app',
+  store,
+  components: {
+    NavBar
+  },
+  methods: {
+  },
+  created: function () {
+    this.$store.dispatch('getAllQuestions')
+  }
 }
 </script>
 
