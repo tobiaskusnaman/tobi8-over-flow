@@ -1,5 +1,8 @@
 <template lang="html">
   <div class="list-group">
+    <router-link :to="{ path: '/post', params: {} }">
+      <button type="button" class="btn btn-primary" style='margin-bottom:20px'>ask a question</button>
+    </router-link>
     <a class="list-group-item list-group-item-action active">
       <span style="float:left">
         <strong>You have asked {{posts.length}} questions </strong>
@@ -51,12 +54,33 @@ export default {
         })
     },
     editPost (postId) {
-      console.log('ADSJBFDLSAFLDASKFDLSA')
       this.$router.push(`user/${postId}/edit`)
-      console.log(postId)
     },
     deletePost (postId) {
-      console.log(postId)
+      this.$swal({
+        title: 'Are you sure?',
+        text: 'Once deleted, you will not be able to recover your post!',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            this.$store.commit('deletePost', postId)
+            this.$http.delete(`posts/${postId}`)
+              .then(postDelete => {
+                this.$swal('Poof! Your post has been deleted!', {
+                  icon: 'success'
+                })
+                console.log(postDelete)
+              })
+              .catch(err => {
+                console.log(err)
+              })
+          } else {
+            this.$swal('Your imaginary file is safe!')
+          }
+        })
     }
   },
   created: function () {
@@ -74,6 +98,11 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    }
+  },
+  watch: {
+    '$store.state.questions': function (val) {
+      this.posts = this.$store.state.questions
     }
   }
 }

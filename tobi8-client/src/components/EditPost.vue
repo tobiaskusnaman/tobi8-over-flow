@@ -24,7 +24,7 @@
 
   <button v-if="!isEdit" type="submit" class="btn btn-primary" @click="startEdit">EDIT</button>
   <div class="" v-else>
-    <button type="button" class="btn btn-outline-primary">Save Changes</button>
+    <button type="button" class="btn btn-outline-primary" @click="editPost">Save Changes</button>
     <button type="button" class="btn btn-outline-secondary" @click="cancelEdit">Cancel</button>
   </div>
 
@@ -44,7 +44,11 @@ export default {
   methods: {
     getArticleById () {
       let self = this
-      this.$http.get(`posts/${this.$route.params.postId}`)
+      this.$http.get(`posts/${this.$route.params.postId}`, {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
         .then(post => {
           self.question = post.data.data.question
           self.description = post.data.data.description
@@ -58,6 +62,25 @@ export default {
     },
     cancelEdit () {
       this.$router.push(`/user`)
+    },
+    editPost () {
+      let self = this
+      this.$http.put(`posts/${this.$route.params.postId}`, {
+        question: self.question,
+        descriptor: self.description
+      })
+        .then(editedPost => {
+          this.$swal({
+            title: 'Edit successfully!',
+            text: 'your post has been edited!',
+            icon: 'success',
+            button: 'Wow!'
+          })
+          this.$router.push(`/user`)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
   created: function () {

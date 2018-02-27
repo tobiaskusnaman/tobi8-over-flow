@@ -12,7 +12,6 @@
     </div>
     <button type="submit" class="btn btn-primary" @click="ask">ASK QUESTION</button>
   </fieldset>
-</form>
   </div>
 </template>
 
@@ -56,6 +55,7 @@ export default {
           }
         })
           .then(post => {
+            this.$store.commit('addPost', post.data.data)
             this.$swal({
               title: 'Good job!',
               text: 'Your question has been posted!',

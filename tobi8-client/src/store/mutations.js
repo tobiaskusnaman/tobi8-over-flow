@@ -4,5 +4,14 @@ export default {
   },
   setLogin: (state, payload) => {
     state.user = payload
+  },
+  addPost: (state, payload) => {
+    state.questions.push(payload)
+  },
+  deletePost: (state, payload) => {
+    let index = state.questions.findIndex(e => {
+      return e._id === payload
+    })
+    state.questions.splice(index, 1)
   }
 }

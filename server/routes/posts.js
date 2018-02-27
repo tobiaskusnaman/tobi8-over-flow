@@ -6,7 +6,7 @@ var router = express.Router();
 
 router.post('/', authentication, Post.create);
 router.get('/', Post.findAll)
-router.get('/:postId', Post.findById)
+router.get('/:postId', authentication, Post.findById)
 router.get('/user/:userId', Post.findByUserId)
 router.put('/:id', Post.edit)
 router.delete('/:id', Post.remove)
