@@ -13,5 +13,12 @@ export default {
       return e._id === payload
     })
     state.questions.splice(index, 1)
+  },
+  addAnswer: (state, payload) => {
+    console.log('INI DI MUTATION', payload)
+    let index = state.questions.findIndex(e => {
+      return e._id === payload._id
+    })
+    state.questions.splice(index, 1, payload)
   }
 }

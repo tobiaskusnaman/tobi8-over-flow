@@ -6,11 +6,9 @@ mongoose.connect('mongodb://localhost/overflow');
 
 var CommentSchema  = new Schema({
   comment: String,
-  userId: {
-    type: Schema.Types.ObjectId, ref: 'User'
-  },
+  username: String,
   votes: [{
-    type: Schema.Types.ObjectId, ref: 'User',unique: true
+    type: Schema.Types.ObjectId, ref: 'User'
   }]
 }, { timestamps: true });
 

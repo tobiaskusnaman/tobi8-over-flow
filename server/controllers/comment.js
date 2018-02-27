@@ -8,7 +8,8 @@ class CommentController {
   static create (req,res){
     let newComment = {
       comment : req.body.comment,
-      userId: req.body.userId
+      username: req.headers.decoded.data.username,
+      votes: []
     }
     CommentModel.create(newComment)
     .then(newComment => {
@@ -16,10 +17,19 @@ class CommentController {
         "$push": { "comment": newComment }
       })
         .then(data => {
-          res.status(200).send({
-            data: data,
-            msg: 'comment has been added'
-          })
+          Post.findById(req.params.id)
+            .then(editedPost => {
+              res.send({
+                msg: 'comment has been added',
+                data: editedPost
+              })
+            })
+            .catch(err => {
+              res.send({
+                msg: 'get last edit error',
+                err
+              })
+            })
         })
         .catch(err => {
           res.send({
@@ -30,7 +40,7 @@ class CommentController {
     })
     .catch(err => {
       res.status(500).send({
-        msg : 'add comment error',
+        msg : 'create comment error',
         err
       })
     })

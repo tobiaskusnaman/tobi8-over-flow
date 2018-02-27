@@ -13,11 +13,11 @@
           </li>
         </ul>
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" data-target="#openModalSignUp" data-toggle="modal">Sign Up</a>
-          </li>
           <li v-if="isLogin" class="nav-item">
             <router-link class="nav-link" :to="{ path: '/user', params: {} }"> My Question </router-link>
+          </li>
+          <li v-if="!isLogin" class="nav-item">
+            <a class="nav-link" data-target="#openModalSignUp" data-toggle="modal">Sign Up</a>
           </li>
           <li class="nav-item">
             <a v-if="!isLogin" class="nav-link" data-target="#openModal" data-toggle="modal">Login</a>

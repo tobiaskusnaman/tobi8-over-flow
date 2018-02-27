@@ -67,7 +67,7 @@ export default {
       let self = this
       this.$http.put(`posts/${this.$route.params.postId}`, {
         question: self.question,
-        descriptor: self.description
+        description: self.description
       })
         .then(editedPost => {
           this.$swal({

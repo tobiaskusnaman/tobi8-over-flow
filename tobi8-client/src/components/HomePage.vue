@@ -2,20 +2,24 @@
   <div class="hello">
     <h1 v-if="!isLogin">HOME PAGE</h1>
       <h1 v-else>Welcome, {{getUser.username}}</h1>
-      <router-link :to="{ path: '/user', params: {} }">
-        <button type="button" class="btn btn-primary" style='margin-bottom:20px'>My Questions</button>
-      </router-link>
-      <router-link :to="{ path: '/post', params: {} }">
-        <button type="button" class="btn btn-primary" style='margin-bottom:20px'>ask a question</button>
-      </router-link>
+      <div class="" v-if="isLogin">
+        <router-link :to="{ path: '/user', params: {} }">
+          <button type="button" class="btn btn-primary" style='margin-bottom:20px'>My Questions</button>
+        </router-link>
+        <router-link :to="{ path: '/post', params: {} }">
+          <button type="button" class="btn btn-primary" style='margin-bottom:20px'>ask a question</button>
+        </router-link>
+      </div>
     <div class="card bg-light mb-3" style="width: 100%;">
       <div class="card-header">Questions</div>
       <div v-for="question in getQuestions"class="card bg-light mb-3" style="width: 100%;margin-bottom:0px!important">
         <div class="card-body">
-              <h4 class="card-title">{{question.question}}</h4>
-              <p class="card-text"> by {{question.userId.username}}</p>
-              <button type="button" class="btn btn-primary">Vote</button>
-              [JUMLAH]
+          <router-link class="card-title" :to="{ path: `post/${question._id}`, params: { postId : question._id} }">
+            <h4 >{{question.question}}</h4>
+          </router-link>
+          <p class="card-text"> by {{question.userId.username}}</p>
+          <button type="button" class="btn btn-primary">Vote</button>
+          [JUMLAH]
         </div>
       </div>
     </div>

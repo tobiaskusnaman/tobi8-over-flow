@@ -88,7 +88,6 @@ class PostController {
     })
       .then(user => {
         if (user.votes.length === 0) {
-          console.log('belum pernah');
           //tambahin vote klo dapet
           Post.findByIdAndUpdate(req.params.postId, {
             "$push": {
@@ -127,6 +126,7 @@ class PostController {
     Post.find({
       userId: req.params.userId
     })
+      .populate('comment')
       .then(post => {
         res.send({
           msg: 'posts are found',
@@ -140,6 +140,8 @@ class PostController {
 
   static findById (req,res) {
     Post.findById(req.params.postId)
+      .populate('comment comment.userId')
+      // .populate('')
       .then(post => {
         res.send({
           msg: 'post is found',
