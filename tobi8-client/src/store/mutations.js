@@ -19,8 +19,5 @@ export default {
       return e._id === payload._id
     })
     state.questions.splice(index, 1, payload)
-  },
-  voteAnswer: (state, payload) => {
-    // let index = state.questions.
   }
 }

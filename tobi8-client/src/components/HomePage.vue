@@ -12,14 +12,20 @@
       </div>
     <div class="card bg-light mb-3" style="width: 100%;">
       <div class="card-header">Questions</div>
-      <div v-for="question in getQuestions"class="card bg-light mb-3" style="width: 100%;margin-bottom:0px!important">
-        <div class="card-body">
-          <router-link class="card-title" :to="{ path: `post/${question._id}`, params: { postId : question._id} }">
-            <h4 >{{question.question}}</h4>
-          </router-link>
-          <p class="card-text"> by {{question.userId.username}}</p>
-          <button type="button" class="btn btn-primary">Vote</button>
-          [JUMLAH]
+      <div class="row" v-for="question in getQuestions" style="margin:10px;text-align:left">
+        <div class="col-sm-1">
+          {{question.votes.length}}
+          <button type="button" class="btn btn-primary" @click="voteQuestion(question._id)">Vote</button>
+        </div>
+        <div class="col-sm-11">
+          <div class="card bg-light mb-3" style="margin-bottom:0px!important">
+            <div class="card-body">
+              <router-link class="card-title" :to="{ path: `post/${question._id}`, params: { postId : question._id} }">
+                <h4 >{{question.question}}</h4>
+              </router-link>
+              <p class="card-text"> by {{question.userId.username}}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -39,6 +45,18 @@ export default {
       'getQuestions',
       'getUser'
     ])
+  },
+  methods: {
+    voteQuestion (questionId) {
+      let self = this
+      this.$http.post(`posts/${this.$store.state.user._id}/post/${questionId}/vote`)
+        .then(questionVoted => {
+          self.$store.dispatch('getAllQuestions')
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   },
   watch: {
     'getUser': function (val) {
