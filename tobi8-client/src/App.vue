@@ -1,17 +1,12 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="#">tobi8-overflow</a>
+      <router-link class="navbar-brand" :to="{ path: '/', params: {} }"> Home </router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <router-link class="nav-link" :to="{ path: '/', params: {} }"> Home </router-link>
-          </li>
-        </ul>
         <ul class="navbar-nav">
           <li v-if="isLogin" class="nav-item">
             <router-link class="nav-link" :to="{ path: '/user', params: {} }"> My Question </router-link>
@@ -57,6 +52,13 @@ export default {
       this.isLogin = false
       localStorage.clear()
       this.$store.commit('setLogin', null)
+      this.$router.push('/')
+      this.$swal({
+        title: 'See you again!',
+        text: 'You have logged out!',
+        icon: 'success',
+        button: 'Bye!'
+      })
     }
   },
   created: function () {
@@ -67,8 +69,11 @@ export default {
   },
   watch: {
     '$store.state.user': function (val) {
+      console.log('INI WATCH', val)
       if (val) {
         this.isLogin = true
+      } else {
+        this.isLogin = false
       }
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1 v-if="!isLogin">HOME PAGE</h1>
+    <h1 v-if="!isLogin">tobi8-OVERFLOW</h1>
       <h1 v-else>Welcome, {{getUser.username}}</h1>
       <div class="" v-if="isLogin">
         <router-link :to="{ path: '/user', params: {} }">
@@ -49,13 +49,22 @@ export default {
   methods: {
     voteQuestion (questionId) {
       let self = this
-      this.$http.post(`posts/${this.$store.state.user._id}/post/${questionId}/vote`)
-        .then(questionVoted => {
-          self.$store.dispatch('getAllQuestions')
+      if (this.$store.state.user) {
+        this.$http.post(`posts/${this.$store.state.user._id}/post/${questionId}/vote`)
+          .then(questionVoted => {
+            self.$store.dispatch('getAllQuestions')
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } else {
+        this.$swal({
+          title: 'Want to give votes ?',
+          text: 'Please log in first',
+          icon: 'warning',
+          button: 'Got it'
         })
-        .catch(err => {
-          console.log(err)
-        })
+      }
     }
   },
   watch: {
