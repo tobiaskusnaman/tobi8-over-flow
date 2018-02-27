@@ -53,36 +53,13 @@ class CommentController {
     })
   }
 
-//   var commentSchema = new Schema({
-//   content: [String]
-// });
-//
-// var postSchema = new Schema({
-//   comments: [{type: Schema.ObjectId, ref: 'Comment'}]
-// });
-
- //  var ids = ['50478c35889a450000000001',  '50478c35889a450000000002'];
- //
- // Post.findById(req.param('post_id'))
- //    .select({ comments: { $elemMatch: {$in: ids }}})
- //    .exec(function (err, doc) {
- //         console.log(doc.comments); //  ['50478c35889a450000000001'] <- returns only one comment id
- //         done(err);
- // });
-
- // Posts.findById(req.param('post_id'))
- //   .where('comments', { $elemMatch: {$in: ids }})
- //   .exec(function(err, doc) {
- //      console.log(doc.comments);
- //      done(err);
- //    });
-
-  static voteUp (req,res) {
+  static vote (req,res) {
     CommentModel.findById(req.params.commentId,{
       votes: { $elemMatch: {$eq: req.params.id}}
     })
       .then(user => {
         if (user.votes.length === 0) {
+          //tambahin vote klo dapet
           CommentModel.findByIdAndUpdate(req.params.commentId, {
             "$push": {
               "votes": req.params.id
@@ -95,6 +72,7 @@ class CommentController {
               res.send(err)
             })
         } else {
+          //unlike vote
           CommentModel.update({
             _id : req.params.commentId
           }, {
@@ -103,11 +81,9 @@ class CommentController {
               }
           })
             .then(data => {
-              console.log(data);
               res.send(data)
             })
             .catch(err => {
-              console.log(err);
               res.send(err)
             })
         }

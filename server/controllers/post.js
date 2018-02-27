@@ -80,5 +80,46 @@ class PostController {
       })
     })
   }
+
+  static vote (req,res) {
+    Post.findById(req.params.postId, {
+      votes: { $elemMatch: {$eq: req.params.id}}
+    })
+      .then(user => {
+        if (user.votes.length === 0) {
+          console.log('belum pernah');
+          //tambahin vote klo dapet
+          Post.findByIdAndUpdate(req.params.postId, {
+            "$push": {
+              "votes": req.params.id
+            }
+          })
+            .then(data => {
+              res.send(data)
+            })
+            .catch(err => {
+              res.send(err)
+            })
+        } else {
+          //unlike vote
+          Post.update({
+            _id : req.params.postId
+          }, {
+            "$pull": {
+              "votes": { $in : [req.params.id]}
+              }
+          })
+            .then(data => {
+              res.send(data)
+            })
+            .catch(err => {
+              res.send(err)
+            })
+        }
+      })
+      .catch(err => {
+        res.send(err)
+      })
+  }
 }
 module.exports = PostController;
