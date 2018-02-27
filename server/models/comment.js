@@ -8,7 +8,10 @@ var CommentSchema  = new Schema({
   comment: String,
   userId: {
     type: Schema.Types.ObjectId, ref: 'User'
-  }
+  },
+  votes: [{
+    type: Schema.Types.ObjectId, ref: 'User',unique: true
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Comment', CommentSchema)

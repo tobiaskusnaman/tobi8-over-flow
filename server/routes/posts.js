@@ -10,5 +10,9 @@ router.get('/', Post.findAll)
 router.put('/:id', Post.edit)
 router.delete('/:id', Post.remove)
 router.post('/:id/comment', CommentController.create)
+router.delete('/:id/comment/:commentId', CommentController.remove)
+// router.post('/:id/comment/:commentId/voteup', Post.voteUp)
+router.post('/:id/comment/:commentId/voteUp', CommentController.voteUp)
+router.post('/:id/comment/:commentId/voteDown', CommentController.voteUp)
 
 module.exports = router;

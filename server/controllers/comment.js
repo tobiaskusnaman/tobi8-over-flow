@@ -36,44 +36,85 @@ class CommentController {
     })
   }
 
-  // static edit(req,res){
-  //   let userEdited = {
-  //     email : req.body.email,
-  //     password : req.body.password,
-  //     name : req.body.name,
-  //     address : req.body.address,
-  //   }
-  //   Customer.findOneAndUpdate({
-  //     _id : req.params.id
-  //   }, userEdited )
-  //   .then(user => {
-  //     res.send({
-  //       msg : 'a user has been edited',
-  //       data : user
-  //     })
-  //   })
-  //   .catch(err=>{
-  //     res.send({
-  //       msg : 'edit failed',
-  //       err
-  //     })
-  //   })
-  // }
-  //
-  // static remove(req,res){
-  //   Customer.remove({
-  //     _id : req.params.id
-  //   })
-  //   .then(user => {
-  //     res.send({
-  //       msg : 'a customer has been deleted',
-  //       data : user
-  //     })
-  //   })
-  //   .catch(err => {res.send({
-  //     msg : 'delete failed',
-  //     err
-  //   })})
-  // }
+  static remove (req,res) {
+    CommentModel.remove({
+      _id : req.params.commentId
+    })
+    .then(data => {
+      res.send({
+        msg : 'a comment has been deleted',
+        data
+      })
+    })
+    .catch(err => {res.send({
+        msg : 'delete comment is failed',
+        err
+      })
+    })
+  }
+
+//   var commentSchema = new Schema({
+//   content: [String]
+// });
+//
+// var postSchema = new Schema({
+//   comments: [{type: Schema.ObjectId, ref: 'Comment'}]
+// });
+
+ //  var ids = ['50478c35889a450000000001',  '50478c35889a450000000002'];
+ //
+ // Post.findById(req.param('post_id'))
+ //    .select({ comments: { $elemMatch: {$in: ids }}})
+ //    .exec(function (err, doc) {
+ //         console.log(doc.comments); //  ['50478c35889a450000000001'] <- returns only one comment id
+ //         done(err);
+ // });
+
+ // Posts.findById(req.param('post_id'))
+ //   .where('comments', { $elemMatch: {$in: ids }})
+ //   .exec(function(err, doc) {
+ //      console.log(doc.comments);
+ //      done(err);
+ //    });
+
+  static voteUp (req,res) {
+    CommentModel.findById(req.params.commentId,{
+      votes: { $elemMatch: {$eq: req.params.id}}
+    })
+      .then(user => {
+        if (user.votes.length === 0) {
+          CommentModel.findByIdAndUpdate(req.params.commentId, {
+            "$push": {
+              "votes": req.params.id
+            }
+          })
+            .then(data => {
+              res.send(data)
+            })
+            .catch(err => {
+              res.send(err)
+            })
+        } else {
+          CommentModel.update({
+            _id : req.params.commentId
+          }, {
+            "$pull": {
+              "votes": { $in : [req.params.id]}
+              }
+          })
+            .then(data => {
+              console.log(data);
+              res.send(data)
+            })
+            .catch(err => {
+              console.log(err);
+              res.send(err)
+            })
+        }
+      })
+      .catch(err => {
+        res.send(err)
+      })
+  }
 }
 module.exports = CommentController;
