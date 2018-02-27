@@ -53,6 +53,7 @@ export default {
         .then(user => {
           localStorage.setItem('token', user.data.data[0])
           self.$store.commit('setLogin', user.data.data[1])
+          self.eraseData()
           this.$swal({
             title: 'Good job!',
             text: 'You have logged in!',

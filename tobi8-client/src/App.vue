@@ -8,14 +8,20 @@
 
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ path: '/', params: {} }"> Home </router-link>
+          </li>
         </ul>
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link" data-target="#openModalSignUp" data-toggle="modal">Sign Up</a>
           </li>
+          <li v-if="isLogin" class="nav-item">
+            <router-link class="nav-link" :to="{ path: '/user', params: {} }"> My Question </router-link>
+          </li>
           <li class="nav-item">
             <a v-if="!isLogin" class="nav-link" data-target="#openModal" data-toggle="modal">Login</a>
-            <a v-else="!isLogin" class="nav-link" @click='logout'>LogOut</a>
+            <a v-else="isLogin" class="nav-link" @click='logout'>LogOut</a>
           </li>
         </ul>
       </div>
@@ -29,7 +35,6 @@
     <SignUp/>
   </div>
 </template>
-
 
 <script>
 import store from '@/store/index.js'

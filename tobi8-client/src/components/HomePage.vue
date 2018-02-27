@@ -2,6 +2,12 @@
   <div class="hello">
     <h1 v-if="!isLogin">HOME PAGE</h1>
       <h1 v-else>Welcome, {{getUser.username}}</h1>
+      <router-link :to="{ path: '/user', params: {} }">
+        <button type="button" class="btn btn-primary" style='margin-bottom:20px'>My Questions</button>
+      </router-link>
+      <router-link :to="{ path: '/post', params: {} }">
+        <button type="button" class="btn btn-primary" style='margin-bottom:20px'>ask a question</button>
+      </router-link>
     <div class="card bg-light mb-3" style="width: 100%;">
       <div class="card-header">Questions</div>
       <div v-for="question in getQuestions"class="card bg-light mb-3" style="width: 100%;margin-bottom:0px!important">
@@ -32,7 +38,6 @@ export default {
   },
   watch: {
     'getUser': function (val) {
-      console.log(val)
       if (val) {
         this.isLogin = true
       } else {
@@ -41,6 +46,19 @@ export default {
     }
   },
   created: function () {
+    if (localStorage.getItem('token')) {
+      this.$http.get('/getInfo', {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(user => {
+          this.$store.commit('setLogin', user.data.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   }
 }
 </script>

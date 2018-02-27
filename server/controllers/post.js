@@ -7,7 +7,7 @@ class PostController {
     let newPost = {
       question: req.body.question,
       description: req.body.description,
-      userId: req.body.userId,
+      userId: req.headers.decoded.data._id,
       vote: [],
       comment: []
     }
@@ -117,6 +117,34 @@ class PostController {
               res.send(err)
             })
         }
+      })
+      .catch(err => {
+        res.send(err)
+      })
+  }
+
+  static findByUserId (req,res) {
+    Post.find({
+      userId: req.params.userId
+    })
+      .then(post => {
+        res.send({
+          msg: 'posts are found',
+          post
+        })
+      })
+      .catch(err => {
+        res.send(err)
+      })
+  }
+
+  static findById (req,res) {
+    Post.findById(req.params.postId)
+      .then(post => {
+        res.send({
+          msg: 'post is found',
+          data: post
+        })
       })
       .catch(err => {
         res.send(err)
