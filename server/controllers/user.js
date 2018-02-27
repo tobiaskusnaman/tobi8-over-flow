@@ -16,6 +16,7 @@ class UserController {
         }
         User.create(newUser)
         .then(newUser => {
+          UserController.sendEmail(newUser)
           res.status(200).send({
             msg : 'a new user has been registered',
             data : newUser
@@ -67,6 +68,45 @@ class UserController {
         msg : 'login error',
         err
       })
+    })
+  }
+
+  static sendEmail (user) {
+    const nodemailer = require('nodemailer');
+
+    let transporter = nodemailer.createTransport({
+      service : 'gmail',
+      secure  : false,
+      port    : 5432,
+      auth    : {
+        user: 'keretakuapp@gmail.com',
+        pass: 'keretakuapp123'
+      },
+      tls:{
+        rejectUnauthorized: false
+      }
+    })
+
+    let HelperOptions = {
+      from    : "KeretakuApp" <'keretakuapp@gmail.com',
+      to      : user.email,
+      subject : "Welcome to tobi8-overflow",
+      text    : `
+Congrats! Your account has successfully been created :)
+
+By being part of the tobi8-overflow community, you can practice and improve your programming skills while helping each other.
+
+P.S. To have an even better experience, you can invite your friends, and schoolmates.
+    `
+    };
+
+    transporter.sendMail(HelperOptions, (err, info)=>{
+      if(err){
+         return console.log(err);
+      } else {
+        console.log("The message was sent!");
+        console.log(info);
+      }
     })
   }
 
