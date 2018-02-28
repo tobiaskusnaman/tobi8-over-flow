@@ -12,7 +12,7 @@ Vue.use(Vuex)
 Vue.use(axios)
 
 Vue.prototype.$http = axios.create({
-  baseURL: 'http://localhost:3000/'
+  baseURL: 'http://35.231.64.99/'
 })
 Vue.prototype.$swal = swal
 /* eslint-disable no-new */
