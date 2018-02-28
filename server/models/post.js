@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
-mongoose.connect('mongodb://localhost/overflow');
-
 var PostSchema  = new Schema({
   question: String,
   description: String,

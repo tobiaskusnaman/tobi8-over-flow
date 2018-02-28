@@ -13,7 +13,7 @@ var cors = require('cors')
 var app = express();
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/overflow');
+mongoose.connect('mongodb://tobi8:overflow@ds251588.mlab.com:51588/tobi8-overflow');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
