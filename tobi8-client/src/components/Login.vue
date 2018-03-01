@@ -63,6 +63,12 @@ export default {
         })
         .catch(err => {
           console.log(err)
+          this.$swal({
+            title: 'Oh no!',
+            text: 'In correct username or password!',
+            icon: 'warning',
+            button: 'Try again!'
+          })
         })
     }
   }
