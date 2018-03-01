@@ -51,6 +51,7 @@ export default {
         password: self.password
       })
         .then(user => {
+          self.eraseData()
           localStorage.setItem('token', user.data.data[0])
           self.$store.commit('setLogin', user.data.data[1])
           self.eraseData()
@@ -62,10 +63,11 @@ export default {
           })
         })
         .catch(err => {
+          self.eraseData()
           console.log(err)
           this.$swal({
             title: 'Oh no!',
-            text: 'In correct username or password!',
+            text: 'Incorrect username or password!',
             icon: 'warning',
             button: 'Try again!'
           })
